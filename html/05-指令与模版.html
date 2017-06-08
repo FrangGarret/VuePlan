@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="" id="app">
+			<span :customID='id'>{{ message }}</span>
+			
+		</div>
+	</body>
+</html>
+<script type="text/javascript">
+	let obj = {
+		message:'方家亮，你好',
+		id:'cao'
+	}
+	var vm=new Vue({
+		el:'#app',
+		data:obj
+	})
+	
+	
+</script>

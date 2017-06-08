@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="" id="app">
+			<span>{{true ? 'yes': 'no'}}</span>
+			<span v-html='htmls'>{{ message }}</span>
+		</div>
+	</body>
+</html>
+<script type="text/javascript">
+	let obj = {
+		htmls:'<span>你好，方家亮a</span>'
+	}
+	var vm=new Vue({
+		el:'#app',
+		data:obj
+	})
+	
+	
+</script>

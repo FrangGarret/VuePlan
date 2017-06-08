@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="frang" id="app">
+			<input type="text" name="" id="" value="" v-model="message"/>
+			<p>{{message}}</p>
+		</div>
+	</body>
+</html>
+<script type="text/javascript">
+	let new_data={
+		message:'你好，方家亮'
+	}
+	new Vue({
+		el:'.frang',
+		data:new_data
+	})
+</script>

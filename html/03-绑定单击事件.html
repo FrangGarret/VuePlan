@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		
+	</head>
+	<body>
+		<div class="frang">
+			<span class="frang_son" @click='click_events'>{{message}}</span>
+		</div>
+	</body>
+</html>
+<script type="text/javascript">
+	let obj = {
+		message:'点击我'
+	}
+	new Vue({
+		el:'.frang',
+		data:obj,
+		methods:{
+			click_events(){
+				alert('我被点击了')
+			}
+		}
+	})
+</script>

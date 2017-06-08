@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.blue{
+				color: blue;
+			}
+			.red{
+				color: red;
+			}
+		</style>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="" id="app">
+			<span :class="{blue:blue}">111111</span>
+		</div>
+	</body>
+</html>
+<script type="text/javascript">
+	let obj = {
+		htmls:'<span>你好，方家亮a</span>',
+		abc:'方家亮'
+	}
+	var strs='<div>我是字符串模版</div>'
+	var vm=new Vue({
+		el:'#app',
+		data:obj,
+		render(createElement){
+			return createElement(
+				'ul',
+				{
+					class:{
+						blue:true
+					},
+					style:{
+						fontSize:"50px"
+					},
+					attrs:{//自定义属性
+						abc:'fangjialiang'
+					},
+					domProps:{
+						innerHtml:'<li>fangjialiang</li>'
+					}
+				},
+				[
+					createElement('li',1),
+					createElement('li',2),
+					createElement('li',3)
+				]
+			)
+		}
+	})
+	
+	
+</script>
+
