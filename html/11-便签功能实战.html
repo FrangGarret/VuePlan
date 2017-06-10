@@ -24,24 +24,36 @@
 					v-model="todo"
 				 />
 				<ul class="task-count" >
-					<li v-show="list.length">{{list.length}}个任务未完成</li>
+					<li v-show="list.length">
+					{{ noCheckedLength }}个任务未完成
+					</li>
 					<li class="action">
-						<a class="active" href="#">所有任务</a>
-						<a href="#">未完成的任务</a>
-						<a href="#">完成的任务</a>
+						<a class="active" href="#all">所有任务</a>
+						<a href="#unfinished">未完成的任务</a>
+						<a href="#finished">完成的任务</a>
 					</li>
 				</ul>
 				<h3 class="big-title">任务列表：</h3>
 				<div class="tasks">
 					<span class="no-task-tip" v-show="!list.length">还没有添加任何任务</span>
 					<ul class="todo-list">
-						<li class="todo" :class="{ completed : item.isChecked }" v-for='item in list'>
+						<li class="todo" :class="{ completed : item.isChecked,editing : item === edtorTodo_thing}" v-for='item in filteredList'>
 							<div class="view">
 								<input type="checkbox" checked class="toggle" v-model="item.isChecked"/>
-								<label for="">{{item.title}}</label>
+								<label @dblclick="edtorTodo(item)">{{item.title}}</label>
 								<button class="destroy" @click='deleteTodo(item)'></button>
 							</div>
-							<input type="text" name="" id="" value="" class="edit" />
+							<input 
+								type="text" 
+								name="" 
+								id="" 
+								value="" 
+								class="edit" 
+								v-model="item.title"
+								v-myfocus="edtorTodo_thing === item"
+								@blur="edtorTodoend(item)"
+								@keyup.esc="cancelTodo(item)"
+							/>
 						</li>
 						
 					</ul>
@@ -51,38 +63,106 @@
 	</body>
 
 </html>
+<script src="../js/localstorage.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-	var lists = [
-		{
-			title:"你好",
-			isChecked:false
-		},
-		{
-			title:"你好,草拟吗",
-			isChecked:true
-		}
-	];
-	new Vue({
+	var lists = store.fetch('fangjialiang');
+		
+var vm=new Vue({
 		el: '.main',
 		data: {
 			list: lists,
-			todo:''
+			todo:'',
+			edtorTodo_thing:'',	//记录正在编辑的数据
+			beforeTitle:'',
+			visibility:'all'	//通过这个属性值的变化对数据进行筛选
+		},
+		watch:{
+			list:{//监控list属性，当它发生变化就会执行函数
+				handler:function(){
+					 store.save('fangjialiang',this.list)
+				},
+				deep:true
+			}
+		},
+		computed:{
+			noCheckedLength:function(){
+				var thisLength=this.list.filter(function(item){
+							return !item.isChecked
+						}).length
+				return 	thisLength	
+			},
+			filteredList:function(){
+				//过滤的情况有三种 all、 finished、unfinished
+				var filter={
+					all:function(list){
+						return list
+					},
+					finished:function(list){
+						return list.filter(function(item){
+							return item.isChecked
+						})
+					},
+					unfinished:function(list){
+						return list.filter(function(item){
+							return !item.isChecked
+						})
+					}
+				}
+				
+				return filter[this.visibility] ?filter[this.visibility](lists) : list
+				
+			}
+			
+			
 		},
 		methods:{
 			addTodo:function(ev){//添加任务
 				//向list中添加一项任务
-				console.log(ev)
+				//console.log(ev)
 				this.list.push({
 					title:this.todo,
 					isChecked:false
 				})
 				this.todo=''
 			},
-			deleteTodo(todo){
-				var index=this.list.indexOf(todo);
+			deleteTodo(item){
+				var index=this.list.indexOf(item);
 				this.list.splice(index,1)
 				
+			},
+			edtorTodo(item){
+				//console.log(todo.title)
+				this.beforeTitle=item.title
+				this.edtorTodo_thing = item;
+				
+			},
+			edtorTodoend(item){
+				this.edtorTodo_thing = ''
+			},
+			cancelTodo(item){
+				item.title = this.beforeTitle;
+				this.beforeTitle=''
+				this.edtorTodo_thing = '';
+			}
+		},
+		directives:{
+			"myfocus":{
+				update(el,binding){
+					//console.log(el)		//el代表的是当前指定的绑定的元素
+					//console.log(binding)	//对象，多项信息的集合
+					if(binding.value){
+						el.focus()
+					}
+				}
 			}
 		}
 	})
+	
+	//坚挺hash值改变
+	function watchHashChange(){
+		var vueHash=window.location.hash.slice(1)
+		vm.visibility = vueHash
+	}
+	watchHashChange()
+	window.addEventListener('hashchange',watchHashChange)
 </script>
