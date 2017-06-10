@@ -33,13 +33,13 @@
 				</ul>
 				<h3 class="big-title">任务列表：</h3>
 				<div class="tasks">
-					<span class="no-task-tip">还没有添加任何任务</span>
+					<span class="no-task-tip" v-show="!list.length">还没有添加任何任务</span>
 					<ul class="todo-list">
-						<li class="todo" v-for='item in list'>
+						<li class="todo" :class="{ completed : item.isChecked }" v-for='item in list'>
 							<div class="view">
-								<input type="checkbox" checked class="toggle" />
+								<input type="checkbox" checked class="toggle" v-model="item.isChecked"/>
 								<label for="">{{item.title}}</label>
-								<button class="destroy"></button>
+								<button class="destroy" @click='deleteTodo(item)'></button>
 							</div>
 							<input type="text" name="" id="" value="" class="edit" />
 						</li>
@@ -53,7 +53,14 @@
 </html>
 <script type="text/javascript">
 	var lists = [
-
+		{
+			title:"你好",
+			isChecked:false
+		},
+		{
+			title:"你好,草拟吗",
+			isChecked:true
+		}
 	];
 	new Vue({
 		el: '.main',
@@ -66,9 +73,15 @@
 				//向list中添加一项任务
 				console.log(ev)
 				this.list.push({
-					title:this.todo
+					title:this.todo,
+					isChecked:false
 				})
 				this.todo=''
+			},
+			deleteTodo(todo){
+				var index=this.list.indexOf(todo);
+				this.list.splice(index,1)
+				
 			}
 		}
 	})
