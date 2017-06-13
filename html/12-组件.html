@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div id="app">
+			<h2>自定义的下拉框</h2>
+			<custom_selects></custom_selects>
+		</div>
+		<div id="app1">
+			<h2>自定义的下拉框</h2>
+			<custom_selects></custom_selects>
+		</div>
+	</body>
+
+</html>
+<script type="text/javascript">
+	//全局注册组件
+	Vue.component('custom_selects',{
+		template:
+			`<section class="warp">
+				<div class="searchIpt clearFix">
+					<div class="clearFix">
+						<input type="text" class="keyWord" value="" />
+						<input type="button" value="查询">
+						<span></span>
+					</div>
+					<ul class="list">
+						<li>html+css</li>
+						<li>html5+css3</li>
+						<li>javascript</li>
+						<li>angular</li>
+						<li>react</li>
+						<li>vue</li>
+						<li>jquery</li>
+						<li>nodejs</li>
+					</ul>
+				</div>
+			</section>
+		`
+	})
+	
+	//局部注册
+	new Vue({
+		el:'#app1',
+		data:'',
+		component:{
+			'custom_selects1':{
+				template:
+				`<section class="warp">
+					<div class="searchIpt clearFix">
+						<div class="clearFix">
+							<input type="text" class="keyWord" value="" />
+							<input type="button" value="查询">
+							<span></span>
+						</div>
+						<ul class="list">
+							<li>html+css</li>
+							<li>html5+css3</li>
+							<li>javascript</li>
+							<li>angular</li>
+							<li>react</li>
+							<li>vue</li>
+							<li>jquery</li>
+							<li>nodejs</li>
+						</ul>
+					</div>
+				</section>
+			 `
+		}}
+	})
+</script>
