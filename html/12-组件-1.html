@@ -23,7 +23,8 @@
 	Vue.component('custom_selects',{
 		data:function(){
 			return {
-				selectShow:false
+				selectShow:false,
+				val:''
 			}
 		},
 		props:['btnval','my_list'],
@@ -31,28 +32,40 @@
 			`<section class="warp">
 				<div class="searchIpt clearFix">
 					<div class="clearFix">
-						<input type="text" class="keyWord" value="" @click="selectShow=!selectShow"/>
+						<input type="text" class="keyWord" :value="val" @click="selectShow=!selectShow"/>
 						<input type="button" :value="btnval">
 						<span></span>
 					</div>
-					<custom_list v-show="selectShow" :my_list_son='my_list'></custom_list>
+					<custom_list 
+						v-show="selectShow" 
+						:my_list_son='my_list'
+						v-on:receive="changeValueHander"
+					>
+					</custom_list>
 				</div>
 			</section>
-		`
+		`,
+		methods:{
+			changeValueHander(value){
+				this.val+=value
+			}
+		}
 	})
 	
 	Vue.component('custom_list',{
-		data:function(){
-			return {
-				selectShow:false
-			}
-		},
 		props:['my_list_son'],
 		template:
 			`<ul class="list">
-				<li v-for="item of my_list_son">{{item}}</li>
+				<li v-for="item of my_list_son" @click="selectValueHander(item)">{{item}}</li>
 			</ul>
-		`
+		`,
+		methods:{
+			selectValueHander:function(item){
+				//在子组件里有交互
+				//告知父级，改变val的值，需要触发一个自定义事件
+				this.$emit('receive',item)
+			}
+		}
 	})
 	new Vue({
 		el:'#app',
